@@ -3,16 +3,36 @@
 
 int main(void)
 {
+    std::cout << "Subject tests:\n" << std::endl;
     const Animal* meta = new Animal();
     const Animal* j = new Dog();
     const Animal* i = new Cat();
     std::cout << j->getType() << " " << std::endl;
     std::cout << i->getType() << " " << std::endl;
-    i->makeSound(); //will output the cat sound!
+    i->makeSound(); // will output the cat sound!
     j->makeSound();
     meta->makeSound();
     delete meta;
     delete j;
     delete i;
-    return 0;
+    std::cout  << std::endl;
+
+    std::cout << "Tests with WrongCat and WrongAnimal:" << std::endl;
+    const WrongAnimal* metaWrong = new WrongAnimal();
+    const WrongAnimal* iWrong = new WrongCat();
+    std::cout << iWrong->getType() << " " << std::endl;
+    iWrong->makeSound(); // will output the WrongAnimal sound!
+    metaWrong->makeSound(); // will output the WrongAnimal sound too!
+    delete metaWrong;
+    std::cout  << std::endl;
+    
+    std::cout << "Difference between constructing WrongCat to a WrongAnimal vs a WrongCat pointer" << std::endl;
+    const WrongCat* iCat = new WrongCat();
+    std::cout << iCat->getType() << " " << std::endl; // iCat is a WrongCat pointer, so its type is WrongCat
+    std::cout << iWrong->getType() << " " << std::endl; // iWrong is a WrongAnimal pointer, but its type is WrongCat
+    iCat->makeSound(); // will output the WrongCat sound!
+    iWrong->makeSound(); // will output the WrongAnimal sound!
+    delete iWrong;
+    delete iCat;
+    return (0);
 }
