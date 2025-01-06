@@ -24,16 +24,11 @@ Animal::~Animal(void)
 Animal &Animal::operator=(const Animal &other)
 {
 	if (this != &other)
-		type = other.type;
+		type = other.getType();
 	return (*this);
 }
 
 std::string Animal::getType(void) const
 {
 	return (type);
-}
-
-void Animal::makeSound(void) const
-{
-	std::cout << getType() << ": " << ANIMAL_SOUND << std::endl;
 }

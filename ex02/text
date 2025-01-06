@@ -1,0 +1,405 @@
+#ifndef ANIMAL_HPP
+# define ANIMAL_HPP
+
+# include <iostream>
+
+# define ANIMAL_SOUND "Bing bong"
+# define WRONG_ANIMAL_SOUND "Bong bing"
+
+class Animal
+{
+	protected:
+		std::string type;
+	public:
+		Animal(void);
+		Animal(const Animal &other);
+		virtual ~Animal(void);
+
+		Animal &operator=(const Animal &other);
+
+		std::string getType(void) const;
+		void setType(std::string name);
+
+		virtual void makeSound(void) const;
+};
+
+/*
+This is wrong because we do not use the virtual keyword for
+makeSound() and the base class destructor.
+*/
+class WrongAnimal
+{
+	protected:
+		std::string type;
+	public:
+		WrongAnimal(void);
+		WrongAnimal(const WrongAnimal &other);
+		~WrongAnimal(void);
+
+		WrongAnimal &operator=(const WrongAnimal &other);
+
+		std::string getType(void) const;
+		void setType(std::string name);
+
+		void makeSound(void) const;
+};
+
+#endif#ifndef BRAIN_HPP
+# define BRAIN_HPP
+
+# include <iostream>
+# include <string>
+
+# define N_IDEAS 100
+
+struct Brain
+{
+	public:
+		Brain(void);
+		Brain(const Brain &other);
+		~Brain(void);
+
+		Brain &operator=(const Brain &other);
+
+		std::string	ideas[N_IDEAS];
+};
+
+#endif
+#ifndef CAT_HPP
+# define CAT_HPP
+
+# include "Animal.hpp"
+# include "Brain.hpp"
+
+# define CAT_SOUND "Meow meow rrrrr"
+# define WRONG_CAT_SOUND "Miaw miaw rrrrr"
+
+class Cat : public Animal
+{
+	public:
+		Cat(void);
+		Cat(const Cat &other);
+		~Cat(void);
+
+		Cat &operator=(const Cat &);
+
+		void makeSound(void) const;
+		std::string	getIdea(int index);
+		void		setIdea(int index, std::string newIdea);
+	private:
+		Brain*	catBrain;
+};
+
+class WrongCat : public WrongAnimal
+{
+	public:
+		WrongCat(void);
+		WrongCat(const WrongCat &other);
+		~WrongCat(void);
+
+		WrongCat &operator=(const WrongCat &);
+
+		void makeSound(void) const;
+};
+
+#endif
+#ifndef DOG_HPP
+# define DOG_HPP
+
+# include "Animal.hpp"
+# include "Brain.hpp"
+
+# define DOG_SOUND "Woof woof grrrr"
+
+class Dog : public Animal
+{
+	public:
+		Dog(void);
+		Dog(const Dog &other);
+		~Dog(void);
+
+		Dog &operator=(const Dog &);
+
+		void	makeSound(void) const;
+		std::string	getIdea(int index);
+		void		setIdea(int index, std::string newIdea);
+	private:
+		Brain*	dogBrain;
+};
+
+#endif
+#include "Animal.hpp"
+
+Animal::Animal(void) : type("Default")
+{
+	std::cout << "Default Animal constructor called" << std::endl;
+}
+
+Animal::Animal(const Animal &other)
+{
+	std::cout << "Copy constructor called for Animal: " << other.type << std::endl;
+	*this = other;
+}
+
+Animal::~Animal(void)
+{
+	std::cout << "Destroying Animal: " << getType() << std::endl;
+}
+
+Animal &Animal::operator=(const Animal &other)
+{
+	if (this != &other)
+		setType(other.type);
+	return (*this);
+}
+
+std::string Animal::getType(void) const
+{
+	return (type);
+}
+
+void Animal::setType(std::string name)
+{
+	type = name;
+}
+
+void Animal::makeSound(void) const
+{
+	std::cout << getType() << ": " << ANIMAL_SOUND << std::endl;
+}#include "Brain.hpp"
+
+Brain::Brain(void)
+{
+    std::cout << "Creating Brain..." << std::endl;
+    for (int i=0; i < N_IDEAS; ++i)
+        ideas[i] = "Thought";
+}
+
+Brain::Brain(const Brain &other)
+{
+    std::cout << "Creating Brain using the copy constructor..." << std::endl;
+    for (int i=0; i < N_IDEAS; ++i)
+        ideas[i] = other.ideas[i];
+}
+
+Brain::~Brain(void)
+{
+    std::cout << "Destroying Brain..." << std::endl;
+}
+
+Brain &Brain::operator=(const Brain &other)
+{
+    if (this != &other)
+    {
+        for (int i=0; i < N_IDEAS; ++i)
+            ideas[i] = other.ideas[i];
+    }
+    return (*this);
+}#include "Cat.hpp"
+
+Cat::Cat(void) : Animal()
+{
+	setType("Cat");
+	catBrain = new Brain();
+	std::cout << "Default Cat constructor called" << std::endl;
+}
+
+Cat::Cat(const Cat &other) : Animal(other)
+{
+	catBrain = new Brain(*other.catBrain);
+	std::cout << "Copy constructor called for: " << getType() << std::endl;
+}
+
+Cat::~Cat(void)
+{
+	delete catBrain;
+	std::cout << "Destroying " << getType() << std::endl;
+}
+
+Cat &Cat::operator=(const Cat &other)
+{
+	if (this != &other)
+	{
+		setType(other.getType());
+		delete catBrain;
+		catBrain = new Brain(*other.catBrain);
+	}
+	return (*this);
+}
+
+void Cat::makeSound(void) const
+{
+	std::cout << getType() << ": " << CAT_SOUND << std::endl;
+}
+
+std::string	Cat::getIdea(int index)
+{
+	return (catBrain->ideas[index]);
+}
+
+void		Cat::setIdea(int index, std::string newIdea)
+{
+	catBrain->ideas[index] = newIdea;
+}#include "Dog.hpp"
+
+Dog::Dog(void) : Animal()
+{
+    setType("Dog");
+	dogBrain = new Brain();
+	std::cout << "Default Dog constructor called" << std::endl;
+}
+
+Dog::Dog(const Dog &other) : Animal(other)
+{
+	dogBrain = new Brain(*other.dogBrain);
+	std::cout << "Copy constructor called for Dog: " << getType() << std::endl;
+}
+
+Dog::~Dog(void)
+{
+	delete dogBrain;
+	std::cout << "Destroying " << getType() << std::endl;
+}
+
+Dog &Dog::operator=(const Dog &other)
+{
+	if (this != &other)
+	{
+		setType(other.getType());
+		delete dogBrain;
+		dogBrain = new Brain(*other.dogBrain);
+	}
+	return (*this);
+}
+
+void Dog::makeSound(void) const
+{
+	std::cout << getType() << ": " << DOG_SOUND << std::endl;
+}
+
+std::string	Dog::getIdea(int index)
+{
+	return (dogBrain->ideas[index]);
+}
+
+
+void		Dog::setIdea(int index, std::string newIdea)
+{
+	dogBrain->ideas[index] = newIdea;
+}#include "Animal.hpp"
+
+WrongAnimal::WrongAnimal(void) : type("Default")
+{
+	std::cout << "Default WrongAnimal constructor called" << std::endl;
+}
+
+WrongAnimal::WrongAnimal(const WrongAnimal &other)
+{
+	std::cout << "Copy constructor called for WrongAnimal: " << other.type << std::endl;
+	*this = other;
+}
+
+WrongAnimal::~WrongAnimal(void)
+{
+	std::cout << "Destroying WrongAnimal: " << getType() << std::endl;
+}
+
+WrongAnimal &WrongAnimal::operator=(const WrongAnimal &other)
+{
+	if (this != &other)
+		setType(other.type);
+	return (*this);
+}
+
+std::string WrongAnimal::getType(void) const
+{
+	return (type);
+}
+
+void WrongAnimal::setType(std::string name)
+{
+	type = name;
+}
+
+void WrongAnimal::makeSound(void) const
+{
+	std::cout << getType() << ": " << WRONG_ANIMAL_SOUND << std::endl;
+}#include "Cat.hpp"
+
+WrongCat::WrongCat(void) : WrongAnimal()
+{
+	setType("WrongCat");
+	std::cout << "Default WrongCat constructor called" << std::endl;
+}
+
+WrongCat::WrongCat(const WrongCat &other) : WrongAnimal(other)
+{
+	std::cout << "Copy constructor called for: " << getType() << std::endl;
+}
+
+WrongCat::~WrongCat(void)
+{
+	std::cout << "Destroying " << getType() << std::endl;
+}
+
+WrongCat &WrongCat::operator=(const WrongCat &other)
+{
+	if (this != &other)
+		setType(other.getType());
+	return (*this);
+}
+
+void WrongCat::makeSound(void) const
+{
+	std::cout << getType() << ": " << WRONG_CAT_SOUND << std::endl;
+}#include "Cat.hpp"
+#include "Dog.hpp"
+
+int main(void)
+{
+    std::cout << "Subject tests:" << std::endl;
+    const Animal* j = new Dog();
+    const Animal* i = new Cat();
+    delete j;//should not create a leak
+    delete i;
+    std::cout << std::endl;
+
+    int n_animals = 6;
+    const Animal* animalArray[n_animals];
+    for (int i = 0; i < n_animals / 2; ++i)
+    {
+        animalArray[i] = new Dog();
+        animalArray[i + n_animals / 2] = new Cat();
+    }
+    std::cout << std::endl;
+    
+    std::cout << "Testing for deep copies:" << std::endl;
+    Dog ogDog = Dog();
+    Cat ogCat = Cat();
+
+    Dog copyDog = ogDog;
+    Cat copyCat = Cat(ogCat);
+    
+    std::cout << std::endl;
+    std::cout << ogDog.getIdea(0) << std::endl;
+    std::cout << copyDog.getIdea(0) << std::endl;
+    std::cout << std::endl;
+    std::cout << ogCat.getIdea(50) << std::endl;
+    std::cout << copyCat.getIdea(50) << std::endl;
+    std::cout << std::endl;
+
+    ogDog.setIdea(0, "Woof Woof");
+    ogCat.setIdea(50, "Meow Meow");
+
+    std::cout << ogDog.getIdea(0) << std::endl;
+    std::cout << copyDog.getIdea(0) << std::endl;
+    std::cout << std::endl;
+    std::cout << ogCat.getIdea(50) << std::endl;
+    std::cout << copyCat.getIdea(50) << std::endl;
+    std::cout << std::endl;
+
+    // As required in subject
+    for (int i = 0; i < n_animals; ++i)
+        delete animalArray[i];
+    return 0;
+}

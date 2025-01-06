@@ -24,7 +24,7 @@ Animal::~Animal(void)
 Animal &Animal::operator=(const Animal &other)
 {
 	if (this != &other)
-		type = other.type;
+		type = other.getType();
 	return (*this);
 }
 
@@ -35,5 +35,5 @@ std::string Animal::getType(void) const
 
 void Animal::makeSound(void) const
 {
-	std::cout << getType() << ": " << ANIMAL_SOUND << std::endl;
+	std::cout << type << ": " << ANIMAL_SOUND << std::endl;
 }

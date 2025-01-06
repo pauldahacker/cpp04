@@ -4,13 +4,13 @@ BLUE = \033[0;94m
 DEF_COLOR = \033[0;39m
 GREEN =	\033[0;92m
 
-NAME = polymorphism
+NAME = brain
 CC = c++
 FLAGS = -Wall -Wextra -Werror -std=c++98
 
-HEADER = Animal.hpp Dog.hpp Cat.hpp
+HEADER = Animal.hpp Dog.hpp Cat.hpp Brain.hpp
 
-SRC = Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp main.cpp
+SRC = Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp Brain.cpp main.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: $(NAME)
