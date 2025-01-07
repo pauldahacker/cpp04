@@ -4,7 +4,7 @@ BLUE = \033[0;94m
 DEF_COLOR = \033[0;39m
 GREEN =	\033[0;92m
 
-NAME = brain
+NAME = abstract
 CC = c++
 FLAGS = -Wall -Wextra -Werror -std=c++98
 
