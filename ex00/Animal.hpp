@@ -28,8 +28,6 @@ makeSound() and the base class destructor.
 */
 class WrongAnimal
 {
-	protected:
-		std::string type;
 	public:
 		WrongAnimal(void);
 		WrongAnimal(std::string name);
@@ -40,6 +38,8 @@ class WrongAnimal
 
 		std::string getType(void) const;
 		void makeSound(void) const;
+	protected:
+		std::string type;
 };
 
 #endif
