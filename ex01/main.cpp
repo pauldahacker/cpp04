@@ -10,7 +10,7 @@ int main(void)
     delete i;
     std::cout << std::endl;
 
-    int n_animals = 6;
+    int n_animals = 8;
     const Animal* animalArray[n_animals];
     for (int i = 0; i < n_animals / 2; ++i)
     {
